@@ -214,9 +214,9 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
   ),
   
   #--------------------------
-  #Panel#7: Multirate MT
+  #Panel#6: Multirate MT
   #--------------------------
-  tabPanel(title = "MMT",
+  tabPanel(title = "MRMT",
            sidebarLayout(
              sidebarPanel(
                #h4("Multirate Mass Transfer"),
@@ -227,6 +227,83 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
                uiOutput("MMTType"),
                uiOutput("MMTNim"),
                uiOutput("MMTPara")
+             ),
+             
+             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
+             )
+             
+           )
+  ),
+  
+  
+  #--------------------------
+  #Panel#7: Reaction
+  #--------------------------
+  tabPanel(title = "Reaction",
+           sidebarLayout(
+             sidebarPanel(
+               #Sorption
+               switchButton(inputId = "sorptionFlag",
+                            label = h4("Activate Sorption Package"),
+                            value = FALSE, col = "GB", type = "TF"),
+               
+               br(),
+               #First order decay
+               switchButton(inputId = "decayFlag",
+                            label = h4("Activate 1st-order Decay Package"),
+                            value = FALSE, col = "GB", type = "TF"),
+               br(),
+               #Bimolecular reaction 
+               switchButton(inputId = "molrxFlag",
+                            label = h4("Activate Bimolecular Reaction Package"),
+                            value = FALSE, col = "GB", type = "TF"),
+             ),
+             
+             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
+             )
+             
+           )
+  ),
+  
+  #--------------------------
+  #Panel#8: Injection
+  #--------------------------
+  tabPanel(title = "Injection",
+           sidebarLayout(
+             sidebarPanel(
+             ),
+
+             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
+             )
+             
+           )
+  ),
+  
+  #--------------------------
+  #Panel#9: Recirculation
+  #--------------------------
+  tabPanel(title = "Recirculation",
+           sidebarLayout(
+             sidebarPanel(
+               switchButton(inputId = "recirculFlag",
+                            label = h4("Activate Recirculation Package"),
+                            value = FALSE, col = "GB", type = "TF"),
+               
+             ),
+             
+             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
+             )
+             
+           )
+  ),
+  
+  #--------------------------
+  #Panel#10: Outputs
+  #--------------------------
+  tabPanel(title = "Outputs",
+           sidebarLayout(
+             sidebarPanel(
+
              ),
              
              mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
