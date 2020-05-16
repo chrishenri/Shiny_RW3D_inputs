@@ -1,0 +1,12 @@
+name: RW3D_generate_inputs
+title: RW3D_generate_inputs
+username:
+account: chrishenri
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 242341
+bundleId: 1145337
+url: https://chrishenri.shinyapps.io/RW3D_generate_inputs/
+when: 1513812228.38084
+asMultiple: FALSE
+asStatic: FALSE
