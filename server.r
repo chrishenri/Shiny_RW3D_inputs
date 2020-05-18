@@ -617,10 +617,10 @@ shinyServer( function(input,output,session){
                   c("Multirate" = "mmt_multir",
                     "Spherical Diffusion" = "mmt_sphdif",
                     "Layered Diffusion" = "mmt_laydif",
-                    "Cylindral Diffusion" = "mmt_cyldif",
-                    "Power Law" = "mmt_power",
-                    "Lognormal Law" = "mmt_lognor",
-                    "Composite Media" = "mmt_comp"
+                    "Cylindral Diffusion" = "mmt_cyldif"
+                    #"Power Law" = "mmt_power",
+                    #"Lognormal Law" = "mmt_lognor",
+                    #"Composite Media" = "mmt_comp"
                   ))
     }
   })
@@ -629,7 +629,7 @@ shinyServer( function(input,output,session){
     mmtFlag <- as.logical(input$mmtFlag)
     if (mmtFlag) {
       if (input$mmttype == "mmt_multir" | input$mmttype == "mmt_sphdif" | input$mmttype == "mmt_laydif" | input$mmttype == "mmt_cyldif" | input$mmttype == "mmt_power" | input$mmttype == "mmt_lognor") {
-        numericInput("nim","Number of immobile zone",0,min = 0, max = NA,width = "100%")
+        numericInput("nim","Number of immobile zone",1,min = 1, max = NA,width = "100%")
       }
     }
   })
@@ -640,20 +640,31 @@ shinyServer( function(input,output,session){
     if (mmtFlag) {
       nim <- as.integer(input$nim)
       if (nim > 0) {
-        list(
-          lapply(1:nim, function(i) {
-            txt <- c("Porosity of immobile zone #",i)
-            textInput(paste0("poroim",i),paste(txt, collapse = ''),"",width = "75%")
-            }),
-          lapply(1:nim, function(i) {
-            txt <- c("Mass transfer rate of immobile zone #",i)
-            textInput(paste0("alpha",i),paste(txt, collapse = ''),"",width = "75%")
-          })
-        )
+        if (input$mmttype == "mmt_multir"){
+          list(
+            lapply(1:nim, function(i) {
+              txt <- c("Porosity of immobile zone #",i)
+              textInput(paste0("poroim",i),paste(txt, collapse = ''),"",width = "75%")
+              }),
+            lapply(1:nim, function(i) {
+              txt <- c("Mass transfer rate of immobile zone #",i)
+              textInput(paste0("alpha",i),paste(txt, collapse = ''),"",width = "75%")
+              })
+            )
+          }
+        else if (input$mmttype == "mmt_sphdif" | input$mmttype == "mmt_laydif" | input$mmttype == "mmt_cyldif") {
+          list(
+              textInput(paste0("poroim1"),paste("Total immobile porosity", collapse = ''),"",width = "75%"),
+              textInput(paste0("alpha1"),paste("Diffusion coefficient", collapse = ''),"",width = "75%")
+          )
+        }
       }
     }
   })
   
+  
+  #Reaction
+  #----------------------------------------------------------
   
   
 }) #function #SinyServer
