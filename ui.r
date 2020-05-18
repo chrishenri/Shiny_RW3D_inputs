@@ -246,12 +246,17 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
                switchButton(inputId = "sorptionFlag",
                             label = h4("Activate Sorption Package"),
                             value = FALSE, col = "GB", type = "TF"),
+               #uiOutput("SorpType"),
+               uiOutput("SorpPara"),
+               uiOutput("SorpMRMT"),
+               uiOutput("SorpParaMRMT"),
                
                br(),
                #First order decay
                switchButton(inputId = "decayFlag",
                             label = h4("Activate 1st-order Decay Package"),
                             value = FALSE, col = "GB", type = "TF"),
+               
                br(),
                #Bimolecular reaction 
                switchButton(inputId = "molrxFlag",

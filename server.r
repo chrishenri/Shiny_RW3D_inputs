@@ -16,6 +16,7 @@ c_back = c_default
 
 shinyServer( function(input,output,session){
   
+  #----------------------------------------------------------
   #General Parameters
   #----------------------------------------------------------
   observeEvent(input$instruPanel1, {
@@ -30,7 +31,7 @@ shinyServer( function(input,output,session){
   })
   
   
-  #---------------------------
+  #---------------
   output$Inputfile <- renderUI({
     if (input$ImportInp == TRUE) {
       list(
@@ -40,7 +41,7 @@ shinyServer( function(input,output,session){
     }
   })
   
-  #---------------------------
+  #---------------
   output$HnameAq <- renderUI({
     numAq <- as.integer(input$naq)
     if (numAq>0) {
@@ -48,7 +49,7 @@ shinyServer( function(input,output,session){
     }
   })
   
-  #---------------------------
+  #---------------
   output$nameAq <- renderUI({
     numAq <- as.integer(input$naq)
     if (numAq > 0) {
@@ -58,7 +59,7 @@ shinyServer( function(input,output,session){
     })}
   })
   
-  #---------------------------
+  #---------------
   output$HnameMn <- renderUI({
     numMn <- as.integer(input$nmn)
     if (numMn>0) {
@@ -66,7 +67,7 @@ shinyServer( function(input,output,session){
     }
   })
   
-  #---------------------------
+  #---------------
   output$nameMn <- renderUI({
     numMn <- as.integer(input$nmn)
     if (numMn>0) {
@@ -118,6 +119,7 @@ shinyServer( function(input,output,session){
   })
   
   
+  #----------------------------------------------------------
   #Geometry
   #----------------------------------------------------------
   #PLot x-grid
@@ -170,6 +172,7 @@ shinyServer( function(input,output,session){
     
   })
   
+  #---------------
   output$DiscX <- renderUI({
     if (input$filedx == "TRUE") {
       list(
@@ -179,6 +182,7 @@ shinyServer( function(input,output,session){
     }
   })
   
+  #---------------
   output$DiscY <- renderUI({
     if (input$filedy == "TRUE") {
       list(
@@ -188,6 +192,7 @@ shinyServer( function(input,output,session){
     }
   })
   
+  #---------------
   output$DiscZ <- renderUI({
     if (input$filedz == "TRUE") {
       list(
@@ -198,6 +203,7 @@ shinyServer( function(input,output,session){
   })
   
   
+  #----------------------------------------------------------
   #Time discretization
   #----------------------------------------------------------
   output$TimeDisc <- renderUI({
@@ -222,6 +228,7 @@ shinyServer( function(input,output,session){
     
   })
   
+  #---------------
   output$TimeDiscOut <- renderUI({
     if (input$meth_dt == 'optimum_dt') {
       str1 <- paste("<h4>Method: Optimum</h4> <br/>")
@@ -255,6 +262,7 @@ shinyServer( function(input,output,session){
     } 
   })
   
+  #---------------
   output$ex1 <- renderUI({
     if (input$meth_dt == 'optimum_dt') {
       withMathJax(
@@ -283,6 +291,7 @@ shinyServer( function(input,output,session){
     } 
   })
   
+  #---------------
   output$TimeDiscOut2 <- renderUI({
     if (input$meth_dt == 'optimum_dt') {
       str1 <- paste("where Cu is the (user defined) grid-Curant number, and tc<sub>adv</sub> is the advective characteristic time;")
@@ -310,6 +319,7 @@ shinyServer( function(input,output,session){
     } 
   })
   
+  #---------------
   output$ex2 <- renderUI({
     if (input$meth_dt == 'optimum_dt') {
       withMathJax(
@@ -341,7 +351,6 @@ shinyServer( function(input,output,session){
   
   #Advection
   #----------------------------------------------------------
-  
   output$AdvMeth <- renderUI({
     if (input$advFlag) {
       selectInput("advmeth", "Method for computation of advective displacement:",
@@ -351,6 +360,7 @@ shinyServer( function(input,output,session){
       }
   })
   
+  #---------------
   output$AdvVal <- renderUI({
     if (input$advFlag) {
       selectInput("advval", "Method to read Darcy velocities:",
@@ -361,6 +371,7 @@ shinyServer( function(input,output,session){
     }
   })
   
+  #---------------
   output$AdvCons <- renderUI({
     if (input$advFlag) {
       if (input$advval == 'vcons') {
@@ -394,6 +405,7 @@ shinyServer( function(input,output,session){
     }
   })
   
+  #---------------
   output$CBBtransnSTPR <- renderUI({
     if (input$advFlag) {
       if (input$advval == 'vmf') {
@@ -405,6 +417,7 @@ shinyServer( function(input,output,session){
     }}}
   })
   
+  #---------------
   output$CBBtransSTPR <- renderUI({
     if (input$advFlag) {
       if (input$advval == 'vmf') {
@@ -427,7 +440,7 @@ shinyServer( function(input,output,session){
     }}}
   })
   
-  
+  #---------------
   output$poro_gslib <- renderUI({
     if (input$fileporo == "TRUE") {
       list(
@@ -437,6 +450,8 @@ shinyServer( function(input,output,session){
     }
   })
   
+  
+  #----------------------------------------------------------
   #Dispersion
   #----------------------------------------------------------
   
@@ -448,6 +463,8 @@ shinyServer( function(input,output,session){
       )
     }
   })
+  
+  #---------------
   output$aL_gslib <- renderUI({
     if (input$dispFlag == "TRUE") {
     if (input$fileaL == "TRUE") {
@@ -458,6 +475,7 @@ shinyServer( function(input,output,session){
     }}
   })
   
+  #---------------
   output$aTHval <- renderUI({
     if (input$dispFlag == "TRUE") {
       list(
@@ -466,6 +484,8 @@ shinyServer( function(input,output,session){
       )
     }
   })
+  
+  #---------------
   output$aTH_gslib <- renderUI({
     if (input$dispFlag == "TRUE") {
       if (input$fileaTH == "TRUE") {
@@ -476,6 +496,7 @@ shinyServer( function(input,output,session){
       }}
   })
   
+  #---------------
   output$aTVval <- renderUI({
     if (input$dispFlag == "TRUE") {
       list(
@@ -484,6 +505,8 @@ shinyServer( function(input,output,session){
       )
     }
   })
+  
+  #---------------
   output$aTV_gslib <- renderUI({
     if (input$dispFlag == "TRUE") {
       if (input$fileaTV == "TRUE") {
@@ -494,7 +517,7 @@ shinyServer( function(input,output,session){
       }}
   })
 
-  
+  #---------------
   output$multDisp <- renderUI({
     if (input$dispFlag == "TRUE") {
       #get all species names
@@ -524,6 +547,7 @@ shinyServer( function(input,output,session){
   })
   
   
+  #----------------------------------------------------------
   #Diffusion
   #----------------------------------------------------------
   output$DmLval <- renderUI({
@@ -534,6 +558,8 @@ shinyServer( function(input,output,session){
       )
     }
   })
+  
+  #---------------
   output$DmL_gslib <- renderUI({
     if (input$diffFlag == "TRUE") {
       if (input$fileDmL == "TRUE") {
@@ -544,6 +570,7 @@ shinyServer( function(input,output,session){
       }}
   })
   
+  #---------------
   output$DmTHval <- renderUI({
     if (input$diffFlag == "TRUE") {
       list(
@@ -552,6 +579,8 @@ shinyServer( function(input,output,session){
       )
     }
   })
+  
+  #---------------
   output$DmTH_gslib <- renderUI({
     if (input$diffFlag == "TRUE") {
       if (input$fileDmTH == "TRUE") {
@@ -562,6 +591,7 @@ shinyServer( function(input,output,session){
       }}
   })
   
+  #---------------
   output$DmTVval <- renderUI({
     if (input$diffFlag == "TRUE") {
       list(
@@ -570,6 +600,8 @@ shinyServer( function(input,output,session){
       )
     }
   })
+  
+  #---------------
   output$DmTV_gslib <- renderUI({
     if (input$diffFlag == "TRUE") {
       if (input$fileDmTV == "TRUE") {
@@ -580,6 +612,7 @@ shinyServer( function(input,output,session){
       }}
   })
   
+  #---------------
   output$multDiff <- renderUI({
     if (input$diffFlag == "TRUE") {
       #get all species names
@@ -609,6 +642,7 @@ shinyServer( function(input,output,session){
   })
   
   
+  #----------------------------------------------------------
   #Multirate Mass Transfer
   #----------------------------------------------------------
   output$MMTType <- renderUI({
@@ -625,6 +659,7 @@ shinyServer( function(input,output,session){
     }
   })
   
+  #---------------
   output$MMTNim <- renderUI({
     mmtFlag <- as.logical(input$mmtFlag)
     if (mmtFlag) {
@@ -634,7 +669,7 @@ shinyServer( function(input,output,session){
     }
   })
   
-  
+  #---------------
   output$MMTPara <- renderUI({
     mmtFlag <- as.logical(input$mmtFlag)
     if (mmtFlag) {
@@ -644,18 +679,18 @@ shinyServer( function(input,output,session){
           list(
             lapply(1:nim, function(i) {
               txt <- c("Porosity of immobile zone #",i)
-              textInput(paste0("poroim",i),paste(txt, collapse = ''),"",width = "75%")
+              numericInput(paste0("poroim",i),paste(txt, collapse = ''),"",min = 0, max = NA, step = 0.1, width = "75%")
               }),
             lapply(1:nim, function(i) {
               txt <- c("Mass transfer rate of immobile zone #",i)
-              textInput(paste0("alpha",i),paste(txt, collapse = ''),"",width = "75%")
+              numericInput(paste0("alpha",i),paste(txt, collapse = ''),"",min = 0, max = NA, step = 0.1, width = "75%")
               })
             )
           }
         else if (input$mmttype == "mmt_sphdif" | input$mmttype == "mmt_laydif" | input$mmttype == "mmt_cyldif") {
           list(
-              textInput(paste0("poroim1"),paste("Total immobile porosity", collapse = ''),"",width = "75%"),
-              textInput(paste0("alpha1"),paste("Diffusion coefficient", collapse = ''),"",width = "75%")
+            numericInput(paste0("poroim1"),paste("Total immobile porosity", collapse = ''),"",min = 0, max = NA, step = 0.1, width = "75%"),
+            numericInput(paste0("alpha1"),paste("Diffusion coefficient", collapse = ''),"",min = 0, max = NA, step = 0.1, width = "75%")
           )
         }
       }
@@ -665,6 +700,60 @@ shinyServer( function(input,output,session){
   
   #Reaction
   #----------------------------------------------------------
+  output$SorpPara <- renderUI({
+    sorpFlag <- as.logical(input$sorptionFlag)
+    if (sorpFlag) {
+      nspe <- as.integer(input$naq)
+      if (nspe > 0 ){
+        #get aq. species names
+        inplist <- as.list(input)
+        namAq <- vector(mode="character", length=nspe)
+        for(i in 1:nspe){
+          namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
+        }
+        lapply(1:nspe, function(i) {
+          txt <- c("Retardation for species ",namAq[i])
+          numericInput(paste0("retard",i),paste(txt, collapse = ''),"1.0",min = 0, max = NA, step = 0.1, width = "75%")
+        })
+      }
+    }
+  })
+
+  #---------------
+  output$SorpMRMT <- renderUI({
+    sorpFlag <- as.logical(input$sorptionFlag)
+    mmtFlag <- as.logical(input$mmtFlag)
+    nspe <- as.integer(input$naq)
+    if (sorpFlag & mmtFlag & nspe>0) {
+      checkboxInput("mmtRdiff", "Check if retardation factor(s) different in immobile zone(s)", value = FALSE, width = "200%")
+    }
+  })
   
+  #---------------
+  #### For now, same retardation factor in all immobile zones. Find a way to specify nested lapply
+  output$SorpParaMRMT <- renderUI({
+    sorpFlag <- as.logical(input$sorptionFlag)
+    mmtFlag <- as.logical(input$mmtFlag)
+    nspe <- as.integer(input$naq)
+    
+    if (sorpFlag & mmtFlag & nspe>0) {
+      nim <- as.integer(input$nim)
+      mmtRdiff <- as.logical(input$mmtRdiff)
+      #get aq. species names
+      inplist <- as.list(input)
+      namAq <- vector(mode="character", length=nspe)
+      for(i in 1:nspe){
+        namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
+      }
+      if (mmtRdiff){
+        lapply(1:nspe, function(i) {
+          txt <- c("Retardation for species ",namAq[i], " in immobile zone (s)")
+          numericInput(paste0("retardIm",i),paste(txt, collapse = ''),"1.0",min = 0, max = NA, step = 0.1, width = "75%")
+        })
+      }
+    }
+  })
+  
+
   
 }) #function #SinyServer
