@@ -80,7 +80,7 @@ shinyServer( function(input,output,session){
   #---------------------------
   Prob <- reactive({
   
-    inplist <- as.list(input)
+    inplist <- reactiveValuesToList(input)
     
     namAq <- vector(mode="character", length=input$naq)
     if (input$naq > 0 ){
@@ -522,25 +522,26 @@ shinyServer( function(input,output,session){
     if (input$dispFlag == "TRUE") {
       #get all species names
       numAq <- as.integer(input$naq)
-      numMn <- as.integer(input$nmn)
-      numSp <- numAq+numMn
+      #numMn <- as.integer(input$nmn)
+      numSp <- numAq #+numMn
       if (numSp>1) {
-        inplist <- as.list(input)
-        namSp <- vector(mode="character", length=numSp)
-        if (numAq > 0 ){
-          for(i in 1:numAq){
-            namSp[i] <- get(paste("nameaq", i, sep = ""),inplist)
-          }
-        }
-        if (numMn > 0 ){
-          for(i in 1:numMn){
-            namSp[i+numAq] <- get(paste("namemn", i, sep = ""),inplist)
-          }
-        }
+        # inplist <- reactiveValuesToList(input)
+        # namSp <- vector(mode="character", length=numSp)
+        # if (numAq > 0 ){
+        #   for(i in 1:numAq){
+        #     namSp[i] <- get(paste("nameaq", i, sep = ""),inplist)
+        #   }
+        # }
+        # if (numMn > 0 ){
+        #   for(i in 1:numMn){
+        #     namSp[i+numAq] <- get(paste("namemn", i, sep = ""),inplist)
+        #   }
+        # }
         
         lapply(1:numSp, function(i) {
-          txt <- c("Mult. species ",namSp[i])
-          div(style="display:inline-block; width: 150px",numericInput(paste0("multDispspe",i),paste(txt, collapse = ''),"1.0",width = "90%"))
+          # txt <- c("Mult. species ",namSp[i])
+          txt <- c("Mult. species ",i)
+          div(style="display:inline-block; width: 150px",numericInput(paste0("multDispspe",i),paste(txt, collapse = ''),"1.0",min = 0, max = NA,step = 1.0,width = "90%"))
         })
       }
     }
@@ -617,28 +618,65 @@ shinyServer( function(input,output,session){
     if (input$diffFlag == "TRUE") {
       #get all species names
       numAq <- as.integer(input$naq)
-      numMn <- as.integer(input$nmn)
-      numSp <- numAq+numMn
+      # numMn <- as.integer(input$nmn)
+      numSp <- numAq #+numMn
       if (numSp>1) {
-        inplist <- as.list(input)
-        namSp <- vector(mode="character", length=numSp)
-        if (numAq > 0 ){
-          for(i in 1:numAq){
-            namSp[i] <- get(paste("nameaq", i, sep = ""),inplist)
-          }
-        }
-        if (numMn > 0 ){
-          for(i in 1:numMn){
-            namSp[i+numAq] <- get(paste("namemn", i, sep = ""),inplist)
-          }
-        }
+      #   inplist <- reactiveValuesToList(input)
+      #   namSp <- vector(mode="character", length=numSp)
+      #   if (numAq > 0 ){
+      #     for(i in 1:numAq){
+      #       namSp[i] <- get(paste("nameaq", i, sep = ""),inplist)
+      #     }
+      #   }
+      #   if (numMn > 0 ){
+      #     for(i in 1:numMn){
+      #       namSp[i+numAq] <- get(paste("namemn", i, sep = ""),inplist)
+      #     }
+      #   }
         
         lapply(1:numSp, function(i) {
-          txt <- c("Mult. species ",namSp[i])
-          div(style="display:inline-block; width: 150px",numericInput(paste0("multDiffspe",i),paste(txt, collapse = ''),"1.0",width = "90%"))
+          # txt <- c("Mult. species ",namSp[i])
+          txt <- c("Mult. species ",i)
+          div(style="display:inline-block; width: 150px",numericInput(paste0("multDiffspe",i),paste(txt, collapse = ''),"1.0",min = 0, max = NA,step = 1.0,width = "90%"))
         })
       }
     }
+  })
+  
+  
+  #---------------------------
+  Spetable <- reactive({
+    
+    inplist <- reactiveValuesToList(input)
+    
+    #get all species names
+    namAq <- vector(mode="character", length=input$naq)
+    if (input$naq > 0 ){
+      for(i in 1:input$naq){
+        namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
+      }
+    }
+    namMn  <- vector(mode="character", length=input$nmn)
+    if (input$nmn > 0 ) {
+      for(i in 1:input$nmn) {
+        namMn[i] <- get(paste("namemn", i, sep = ""),inplist)
+      }
+    }
+    namAll = c(namAq,namMn)
+    
+    nspe <- as.integer(input$naq) + as.integer(input$nmn)
+    if (nspe>0){
+      speindex = seq(1, nspe, by=1)
+      
+      data.frame(
+        Index = c(as.character(speindex)),
+        Names = c(namAll)
+      )
+    }
+  })
+  
+  output$recapSpe1 <- renderTable({
+    Spetable()
   })
   
   
@@ -700,19 +738,22 @@ shinyServer( function(input,output,session){
   
   #Reaction
   #----------------------------------------------------------
+  
+  #Sorption
   output$SorpPara <- renderUI({
     sorpFlag <- as.logical(input$sorptionFlag)
     if (sorpFlag) {
       nspe <- as.integer(input$naq)
       if (nspe > 0 ){
         #get aq. species names
-        inplist <- as.list(input)
-        namAq <- vector(mode="character", length=nspe)
-        for(i in 1:nspe){
-          namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
-        }
+        # inplist <- reactiveValuesToList(input)
+        # namAq <- vector(mode="character", length=nspe)
+        # for(i in 1:nspe){
+        #   namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
+        # }
         lapply(1:nspe, function(i) {
-          txt <- c("Retardation for species ",namAq[i])
+          #txt <- c("Retardation for species ",namAq[i])
+          txt <- c("Retardation for species ",i)
           numericInput(paste0("retard",i),paste(txt, collapse = ''),"1.0",min = 0, max = NA, step = 0.1, width = "75%")
         })
       }
@@ -739,21 +780,165 @@ shinyServer( function(input,output,session){
     if (sorpFlag & mmtFlag & nspe>0) {
       nim <- as.integer(input$nim)
       mmtRdiff <- as.logical(input$mmtRdiff)
-      #get aq. species names
-      inplist <- as.list(input)
-      namAq <- vector(mode="character", length=nspe)
-      for(i in 1:nspe){
-        namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
-      }
+      # get aq. species names
+      # inplist <- reactiveValuesToList(input)
+      # namAq <- vector(mode="character", length=nspe)
+      # for(i in 1:nspe){
+      #   namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
+      # }
       if (mmtRdiff){
         lapply(1:nspe, function(i) {
-          txt <- c("Retardation for species ",namAq[i], " in immobile zone (s)")
+          #txt <- c("Retardation for species ",namAq[i], " in immobile zone (s)")
+          txt <- c("Retardation for species #",i, " in immobile zone (s)")
           numericInput(paste0("retardIm",i),paste(txt, collapse = ''),"1.0",min = 0, max = NA, step = 0.1, width = "75%")
         })
       }
     }
   })
   
+  #---------------
+  #---------------
+  #Linear rx network
+  output$LinRxSpeNum <- renderUI({
+    LinRxFlag <- as.logical(input$decayFlag)
+    nspeaq <- as.integer(input$naq)
+    nspemn <- as.integer(input$nmn)
+    nspe <- nspeaq + nspemn #total number of species
+
+    if (LinRxFlag & nspe>0) {
+      txt <- c("Number of species in the serial, linear reaction network")
+      numericInput("nspedecay",txt,"1",min = 1, max = nspe, step = 1, width = "75%")
+    }
+  })
+
+  #---------------
+  output$LinRxSpePara <- renderUI({
+    LinRxFlag <- as.logical(input$decayFlag)
+    nspeaq <- as.integer(input$naq)
+    nspemn <- as.integer(input$nmn)
+    nspe <- nspeaq + nspemn #total number of species
+
+    if (LinRxFlag & nspe>0) {
+      #get aq. species names
+      # inplist <- reactiveValuesToList(input)
+      # namSpe <- vector(mode="character", length=nspe)
+      # if (nspeaq>0){
+      #   for(i in 1:nspeaq){
+      #     namSpe[i] <- get(paste("nameaq", i, sep = ""),inplist)
+      #   }
+      # }
+      # if (nspemn>0){
+      #   for(i in 1:nspemn){
+      #     namSpe[i+nspeaq] <- get(paste("namemn", i, sep = ""),inplist)
+      #   }
+      # }
+      nspedecay <- as.integer(input$nspedecay)
+      speindex = seq(1, nspe, by=1)
+      if (nspedecay>0){
+        lapply(1:nspedecay, function(i) {
+          # txt <- c("Name of species #",i, " in the linear reaction network")
+          # selectInput(paste0("namespedecay",i), paste(txt, collapse = ''), namSpe, selected = namSpe[i], width = "75%")
+          txt0 <- c("Species #",i, " in the serial, linear reaction network")
+          if (i==1){
+            list(
+              helpText(paste(txt0, collapse = '')),
+              selectInput(paste0("indexspedecay",i), "Index", speindex, selected = speindex[i], width = "75%"),
+              numericInput(paste0("kspe",i), "Decay rate", "0",min = 0, max = NA, step = 0.1, width = "75%")
+            )
+          }
+          else if(i>1){
+            list(
+              helpText(paste(txt0, collapse = '')),
+              selectInput(paste0("indexspedecay",i), "Index", speindex, selected = speindex[i], width = "75%"),
+              numericInput(paste0("kspe",i), "Decay rate", "0",min = 0, max = NA, step = 0.1, width = "75%"),
+              numericInput(paste0("yspe",i), "Yield coef", "0",min = 0, max = NA, step = 0.1, width = "75%")
+            )
+            
+          }
+          
+        })
+      }
+    }
+  })
+  
+  #---------------
+  output$LinRxMRMT <- renderUI({
+    LinRxFlag <- as.logical(input$decayFlag)
+    mmtFlag <- as.logical(input$mmtFlag)
+    nspe <- as.integer(input$naq) + as.integer(input$nmn)
+    if (LinRxFlag & mmtFlag & nspe>0) {
+      checkboxInput("mmtLinRxdiff", "Check if reaction parameters (s) different in immobile zone(s)", value = FALSE, width = "200%")
+    }
+  })
+  
+  
+  #---------------
+  #### For now, same rx parameters in all immobile zones. Find a way to specify nested lapply
+  output$LinRxParaMRMT <- renderUI({
+    LinRxFlag <- as.logical(input$decayFlag)
+    mmtFlag <- as.logical(input$mmtFlag)
+    nspe <- as.integer(input$naq) + as.integer(input$nmn)
+    
+    if (LinRxFlag & mmtFlag & nspe>0) {
+      nim <- as.integer(input$nim)
+      mmtLinRxdiff <- as.logical(input$mmtLinRxdiff)
+      #get aq. species names
+      # inplist <- reactiveValuesToList(input)
+      # namAq <- vector(mode="character", length=nspe)
+      # for(i in 1:nspe){
+      #   namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
+      # }
+      if (mmtLinRxdiff){
+        lapply(1:nspe, function(i) {
+          #txt <- c("Retardation for species ",namAq[i], " in immobile zone (s)")
+          txt <- c("Retardation for species ",i, " in immobile zone (s)")
+          numericInput(paste0("retardIm",i),paste(txt, collapse = ''),"1.0",min = 0, max = NA, step = 0.1, width = "75%")
+        })
+      }
+    }
+  })
+  
+  
+  #---------------------------
+  Spetable <- reactive({
+
+    inplist <- reactiveValuesToList(input)
+
+    #get all species names
+    namAq <- vector(mode="character", length=input$naq)
+    typeAq <- vector(mode="character", length=input$naq)
+    if (input$naq > 0 ){
+      for(i in 1:input$naq){
+        namAq[i] <- get(paste("nameaq", i, sep = ""),inplist)
+        typeAq[i] = "aqueous" 
+      }
+    }
+    namMn  <- vector(mode="character", length=input$nmn)
+    typeMn <- vector(mode="character", length=input$nmn)
+    if (input$nmn > 0 ) {
+      for(i in 1:input$nmn) {
+        namMn[i] <- get(paste("namemn", i, sep = ""),inplist)
+        typeMn[i] = "mineral" 
+      }
+    }
+    namAll = c(namAq,namMn)
+    typeAll = c(typeAq,typeMn)
+
+    nspe <- as.integer(input$naq) + as.integer(input$nmn)
+    if (nspe>0){
+      speindex = seq(1, nspe, by=1)
+
+      data.frame(
+        Index = c(as.character(speindex)),
+        Name = c(namAll),
+        Type = c(typeAll)
+        )
+    }
+  })
+
+  output$recapSpe2 <- renderTable({
+    Spetable()
+  })
 
   
 }) #function #SinyServer

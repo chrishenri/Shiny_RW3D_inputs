@@ -207,7 +207,9 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
                
              ),
              
-             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
+             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right"),
+                       br(), br(), br(),
+                       tableOutput("recapSpe1")
              )
              
            )
@@ -256,6 +258,9 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
                switchButton(inputId = "decayFlag",
                             label = h4("Activate 1st-order Decay Package"),
                             value = FALSE, col = "GB", type = "TF"),
+               uiOutput("LinRxSpeNum"),
+               uiOutput("LinRxSpePara"),
+               uiOutput("LinRxMRMT"),
                
                br(),
                #Bimolecular reaction 
@@ -264,7 +269,9 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
                             value = FALSE, col = "GB", type = "TF"),
              ),
              
-             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
+             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right"),
+                       br(), br(), br(),
+                       tableOutput("recapSpe2")
              )
              
            )
@@ -309,6 +316,21 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
            sidebarLayout(
              sidebarPanel(
 
+             ),
+             
+             mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
+             )
+             
+           )
+  ),
+  
+  #--------------------------
+  #Panel#11: Recap / Export
+  #--------------------------
+  tabPanel(title = "Recap | Export",
+           sidebarLayout(
+             sidebarPanel(
+               
              ),
              
              mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")
