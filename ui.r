@@ -263,10 +263,12 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
                uiOutput("LinRxMRMT"),
                
                br(),
-               #Bimolecular reaction 
+               #Bi-molecular reaction 
                switchButton(inputId = "molrxFlag",
                             label = h4("Activate Bimolecular Reaction Package"),
                             value = FALSE, col = "GB", type = "TF"),
+               uiOutput("molRxNum"),
+               uiOutput("molRxTxt"),
              ),
              
              mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right"),
@@ -283,6 +285,8 @@ shinyUI(navbarPage(#theme = "bootstrap.css",
   tabPanel(title = "Injection",
            sidebarLayout(
              sidebarPanel(
+               numericInput("ninj","Number of injections","0",min = 0, max = NA,step = 1,width = "100%"),
+               uiOutput("Injtype"),
              ),
 
              mainPanel(img(src='RW3D_logov2.png', width = "120px", align = "right")

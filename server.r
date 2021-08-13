@@ -56,7 +56,8 @@ shinyServer( function(input,output,session){
       lapply(1:numAq, function(i) {
        txt <- c("Name of aqueous species #",i)
        textInput(paste0("nameaq",i),paste(txt, collapse = ''),"",width = "65%")
-    })}
+      })
+      }
   })
   
   #---------------
@@ -897,6 +898,48 @@ shinyServer( function(input,output,session){
       }
     }
   })
+  
+  output$molRxNum <- renderUI({
+    molRxFlag <- as.logical(input$molrxFlag)
+    nspe <- as.integer(input$naq) + as.integer(input$nmn)
+    if (molRxFlag & nspe>0) {
+      numericInput("nmolrx", "Number of reaction(s)", "0",min = 0, max = NA, step = 1, width = "75%")
+      }
+  })
+  
+  output$molRxTxt <- renderUI({
+    molRxFlag <- as.logical(input$molrxFlag)
+    nspe <- as.integer(input$naq) + as.integer(input$nmn)
+    if (molRxFlag & nspe>0) {
+      nrx <- as.integer(input$nmolrx)
+      if (nrx>0) {
+      lapply(1:nrx, function(i) {
+        txt <- c("Reaction #",i)
+        textInput(paste0("molrx",i),paste(txt, collapse = ''),"",width = "65%")
+      })
+      }
+    }
+  })
+  
+  
+  #Injection
+  #----------------------------------------------------------
+  output$Injtype <- renderUI({
+    numInj <- as.integer(input$ninj)
+    if (numInj > 0) {
+      lapply(1:numInj, function(i) {
+        txt <- c("Type of injection #",i)
+        selectInput(paste0("typeinj",i), paste(txt, collapse = ''),
+                    c("Line" = "src_line",
+                      "Circle" = "src_circle",
+                      "Radial" = "src_radial",
+                      "Block" = "src_clock",
+                      "Plane" = "src_plane"
+                    ))
+      })
+    }
+  })
+  
   
   
   #---------------------------
